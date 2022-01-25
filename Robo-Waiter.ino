@@ -19,21 +19,16 @@ const int rightbasespeed = 150; //Speed for line follow
 const int maxspeed = 170; //Speed for line follow
 const int turnspeedright = 100; //Speed for line follow
 const int turnspeedleft = 100; //Speed for line follow
-int lastsensor, num_sensor = 8, threshold = 450, preverror;
+int lastsensor, num_sensor = 8, threshold = 550, preverror;
 int leftspeed = 0, rightspeed = 0;
 float kp = 6.20; //4
-float kd = 90; //33
-int sums = 0;
+float kd = 85; //33
+int sums = 0, count = 0;
 int sensorReading[8];
-/*int right[] = {1, 3, 4, 5, 11};
-  int left[] = {2, 7, 8, 10, 13, 14};
-  int straight[] = {6, 9};
-  int forwardright[] = {};
-  int forwardleft[] = {12};*/
-int right[] = {1, 2, 5, 6, 7, 11};
-int left[] = {4, 8, 9, 10, 12};
+int right[] = {1, 3, 4, 5, 9};
+int left[] = {2, 6, 7, 8, 10, 11, 12};
 int straight[] = {};
-int forwardright[] = {3};
+int forwardright[] = {};
 int forwardleft[] = {};
 int nr = sizeof(right) / sizeof(int);
 int nl = sizeof(left) / sizeof(int);
@@ -50,10 +45,17 @@ byte customChar[] = {
   0x1F,
   0x1F
 };
+
+//function definitions
 int conditions();
 void lineFollow();
 void wallFollow();
 void readLine();
+void turnRight(int del1, int del2);
+void turnLeft(int del1, int del2);
+void goStraight(int del,int wheelspeed);
+void stopBot(int del);
+
 void setup()
 {
   pinMode(ena, OUTPUT);
@@ -70,7 +72,9 @@ void setup()
   pinMode(sen1, INPUT);
   pinMode(sen8, INPUT);
 
-  lcd.init();
+//  lcd.init();
+//  lcd.backlight();
+//  lcd.home();
   digitalWrite(irEnb, HIGH);
   Serial.begin(9600);
 }
@@ -79,4 +83,5 @@ void loop()
   //  readLine();
   //  conditions();
   lineFollow();
+  delay(10);
 }
