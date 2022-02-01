@@ -12,8 +12,7 @@ const byte ena = 9;
 const byte enb = 3;
 const byte sen1 = 10;
 const byte sen8 = 11;
-int duration;
-float distance;
+
 const int leftbasespeed = 150; //Speed for line follow
 const int rightbasespeed = 150; //Speed for line follow
 const int maxspeed = 170; //Speed for line follow
@@ -127,9 +126,18 @@ void loop()
   }
   //  readLine();
   //  conditions();
+  
   if (startFlag)
   {
-    lineFollow(ch - '0');
+    int limit = 5;
+    int distance = measureDistance();
+    if( distance > limit)
+    {
+      lineFollow(ch - '0');
+    }
+    else
+    {
+      stopBot(0);
+    }
   }
-  delay(10);
 }
