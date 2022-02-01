@@ -22,11 +22,46 @@ const int turnspeedleft = 100; //Speed for line follow
 int lastsensor, num_sensor = 8, threshold = 550, preverror;
 int leftspeed = 0, rightspeed = 0;
 float kp = 6.20; //4
-float kd = 85; //33
+float kd = 75; //33
 int sums = 0, count = 0;
 int sensorReading[8];
 int right[] = {1, 3, 4, 5, 9};
 int left[] = {2, 6, 7, 8, 10, 11, 12};
+
+//table 1
+int rightOne[] = {2, 3, 4};
+int leftOne[] = {1};
+int straightone[] = {};
+int nrOne = sizeof(rightOne) / sizeof(int);
+int nlOne = sizeof(leftOne) / sizeof(int);
+int nsOne = sizeof(straightone) / sizeof(int);
+
+//table 2
+int rightTwo[] = {1, 4};
+int leftTwo[] = {2, 3};
+int straightTwo[] = {};
+int nrTwo = sizeof(rightTwo) / sizeof(int);
+int nlTwo = sizeof(leftTwo) / sizeof(int);
+int nsTwo = sizeof(straightTwo) / sizeof(int);
+int stopRobot1 = 4;
+
+//table 3
+int rightThree[] = {2, 3};
+int leftThree[] = {4, 6};
+int straightThree[] = {1, 5};
+int nrThree = sizeof(rightThree) / sizeof(int);
+int nlThree = sizeof(leftThree) / sizeof(int);
+int nsThree = sizeof(straightThree) / sizeof(int);
+
+//table 4
+int rightFour[] = {4, 6};
+int leftFour[] = {2, 3};
+int straightFour[] = {1, 5};
+int nrFour = sizeof(rightFour) / sizeof(int);
+int nlFour = sizeof(leftFour) / sizeof(int);
+int nsFour = sizeof(straightFour) / sizeof(int);
+int stopRobot2 = 6;
+
 int straight[] = {};
 int forwardright[] = {};
 int forwardleft[] = {};
@@ -35,6 +70,8 @@ int nl = sizeof(left) / sizeof(int);
 int ns = sizeof(straight) / sizeof(int);
 int nfr = sizeof(forwardright) / sizeof(int);
 int nfl = sizeof(forwardleft) / sizeof(int);
+int startFlag = 0;
+char ch;
 byte customChar[] = {
   0x1F,
   0x1F,
@@ -53,7 +90,7 @@ void wallFollow();
 void readLine();
 void turnRight(int del1, int del2);
 void turnLeft(int del1, int del2);
-void goStraight(int del,int wheelspeed);
+void goStraight(int del, int wheelspeed);
 void stopBot(int del);
 
 void setup()
@@ -72,16 +109,27 @@ void setup()
   pinMode(sen1, INPUT);
   pinMode(sen8, INPUT);
 
-//  lcd.init();
-//  lcd.backlight();
-//  lcd.home();
+  //  lcd.init();
+  //  lcd.backlight();
+  //  lcd.home();
   digitalWrite(irEnb, HIGH);
   Serial.begin(9600);
 }
 void loop()
 {
+  if (Serial.available())
+  {
+    ch = Serial.read();
+    if (ch >= '1' && ch <= '4')
+    {
+      startFlag = 1;
+    }
+  }
   //  readLine();
   //  conditions();
-  lineFollow();
+  if (startFlag)
+  {
+    lineFollow(ch - '0');
+  }
   delay(10);
 }

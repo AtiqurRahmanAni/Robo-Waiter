@@ -20,11 +20,5 @@ void readLine()
   for(int i = 0; i < num_sensor; i++)
   {
     sums += sensorReading[i];
-//    lcd.setCursor(j, 0);
-//    j-=2;
-//    lcd.print(sensorReading[i]);
-//    Serial.print(sensorReading[i]);
-//    Serial.print(" ");
   }
-//  Serial.println("");
 }

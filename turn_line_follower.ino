@@ -38,10 +38,14 @@ void turnLeft()
     wheel(-turnspeedleft, turnspeedright);
   }
 }
-void goStraight(int del, int wheelspeed)
+void goStraight()
 {
-  wheel(wheelspeed, wheelspeed);
-  delay(del);
+  readLine();
+  while (sums >= 4)
+  {
+    readLine();
+    wheel(turnspeedleft, turnspeedright);
+  }
 }
 void stopBot(int del)
 {

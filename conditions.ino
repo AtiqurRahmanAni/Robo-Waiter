@@ -2,7 +2,7 @@ int conditions()
 {
   int i, error, linepos, sumws;
   readLine();
-  if(sums >= 4)
+  if(sums >= 4 || sums == 0)
   {
     return 1000;
   }
