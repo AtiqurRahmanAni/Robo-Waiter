@@ -17,6 +17,7 @@ void turnRight()
     }
     wheel(turnspeedleft, -turnspeedright);
   }
+  stopBot(150);
 }
 void turnLeft()
 {
@@ -37,6 +38,7 @@ void turnLeft()
     }
     wheel(-turnspeedleft, turnspeedright);
   }
+  stopBot(150);
 }
 void goStraight()
 {

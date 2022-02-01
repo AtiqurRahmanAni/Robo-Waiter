@@ -21,7 +21,7 @@ const int turnspeedleft = 100; //Speed for line follow
 int lastsensor, num_sensor = 8, threshold = 550, preverror;
 int leftspeed = 0, rightspeed = 0;
 float kp = 6.20; //4
-float kd = 75; //33
+float kd = 40; //33
 int sums = 0, count = 0;
 int sensorReading[8];
 int right[] = {1, 3, 4, 5, 9};
