@@ -111,7 +111,7 @@ void setup()
   //  lcd.init();
   //  lcd.backlight();
   //  lcd.home();
-  digitalWrite(irEnb, HIGH);
+  digitalWrite(irEnb, LOW);
   Serial.begin(9600);
 }
 void loop()
@@ -121,6 +121,7 @@ void loop()
     ch = Serial.read();
     if (ch >= '1' && ch <= '4')
     {
+      digitalWrite(irEnb, HIGH);
       startFlag = 1;
     }
   }
@@ -129,8 +130,9 @@ void loop()
   
   if (startFlag)
   {
-    int limit = 5;
+    int limit = 10;
     int distance = measureDistance();
+    //Serial.println(distance);
     if( distance > limit)
     {
       lineFollow(ch - '0');
