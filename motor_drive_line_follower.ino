@@ -1,8 +1,5 @@
 void wheel(int leftspeed, int rightspeed)
 {
-  /*Serial.print(leftspeed);
-  Serial.print(' ');
-  Serial.println(rightspeed);*/
   if (leftspeed == 0)
   {
     digitalWrite(enb, HIGH);

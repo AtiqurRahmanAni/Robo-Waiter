@@ -1,7 +1,7 @@
 void turnRight()
 {
   readLine();
-  while (sums >= 4)
+  while (sums >= 3)
   {
     readLine();
     wheel(turnspeedleft, turnspeedright);
@@ -11,7 +11,7 @@ void turnRight()
   while (true)
   {
     readLine();
-    if (sensorReading[7])
+    if (sensorReading[9])
     {
       break;
     }
@@ -22,7 +22,7 @@ void turnRight()
 void turnLeft()
 {
   readLine();
-  while (sums >= 4)
+  while (sums >= 3)
   {
     readLine();
     wheel(turnspeedleft, turnspeedright);
@@ -43,10 +43,10 @@ void turnLeft()
 void goStraight()
 {
   readLine();
-  while (sums >= 4)
+  while (sums >= 3)
   {
     readLine();
-    wheel(turnspeedleft, turnspeedright);
+    wheel(leftbasespeed, rightbasespeed);
   }
 }
 void stopBot(int del)

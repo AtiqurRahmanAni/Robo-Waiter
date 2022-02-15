@@ -2,72 +2,82 @@ void lineFollow(int tableNo)
 {
   int error, delspeed;
   error = conditions();
-  //  Serial.println(error);
   if (error == 1000)
   {
     count++;
+    //    lcd.setCursor(0, 1);
+    //    lcd.print(count);
+
+    if ((((tableNo == 1 || tableNo == 2) && count == 2) || ((tableNo == 3 || tableNo == 4) && count == 3)) && analogRead(A10) > 360)
+    {
+      show_message("Please Take", 0, 2, true);
+      Serial1.print("#");
+      while (analogRead(A10) > 360)
+      {
+        stopBot(0);
+      }
+      show_message("Thank you", 0, 3, true);
+      delay(3000);
+      Serial1.print("$");
+      show_message("Returning back", 0, 1, true);
+      show_message("to the kitchen", 1, 1, false);
+    }
+
     bool fright = false;
     bool fleft = false;
     bool fstraight = false;
     if (tableNo == 1)
     {
-//      Serial.println("Table 1");
-//      Serial.println(count);
       fright = readArray(rightOne, nrOne, count);
       fleft = readArray(leftOne, nlOne, count);
       fstraight = readArray(straightone, nsOne, count);
     }
     else if (tableNo == 2)
     {
-//      Serial.println("Table 2");
-//      Serial.println(count);
       fright = readArray(rightTwo, nrTwo, count);
       fleft = readArray(leftTwo, nlTwo, count);
-      fstraight = readArray(straightTwo, nsOne, count);
+      fstraight = readArray(straightTwo, nsTwo, count);
     }
     else if (tableNo == 3)
     {
-//      Serial.println("Table 3");
-//      Serial.println(count);
       fright = readArray(rightThree, nrThree, count);
       fleft = readArray(leftThree, nlThree, count);
       fstraight = readArray(straightThree, nsThree, count);
     }
     else if (tableNo == 4)
     {
-//      Serial.println("Table 4");
-//      Serial.println(count);
       fright = readArray(rightFour, nrFour, count);
       fleft = readArray(leftFour, nlFour, count);
       fstraight = readArray(straightFour, nsFour, count);
     }
     if (fright)
     {
-//      Serial.println("Right");
       turnRight();
     }
     else if (fleft)
     {
-//      Serial.println("Left");
       turnLeft();
     }
     else if (fstraight)
     {
-//      Serial.println("Straight");
       goStraight();
     }
   }
   else
   {
-    if ((tableNo == 1 || tableNo == 2) && count == stopRobot1)
+    if ((tableNo == 1 || tableNo == 2) && count >= stopRobot1)
     {
+      show_message("Ready to serve", 0, 1 , true);
+      Serial1.print("*");
       digitalWrite(irEnb, LOW);
       startFlag = 0;
       count = 0;
       stopBot(0);
     }
-    else if ((tableNo == 3 || tableNo == 4) && count == stopRobot2)
+    else if ((tableNo == 3 || tableNo == 4) && count >= stopRobot2)
     {
+      show_message("Ready to serve", 0, 1 , true);
+      Serial1.print("*");
       digitalWrite(irEnb, LOW);
       startFlag = 0;
       count = 0;
@@ -75,7 +85,6 @@ void lineFollow(int tableNo)
     }
     if (startFlag)
     {
-      //    Serial.println("Here");
       delspeed = (kp * error) + (kd * (error - preverror));
       leftspeed = leftbasespeed + delspeed;
       rightspeed = rightbasespeed - delspeed;

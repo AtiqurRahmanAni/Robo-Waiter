@@ -1,29 +1,28 @@
 #include<LiquidCrystal_I2C.h>
 #include<Wire.h>
 LiquidCrystal_I2C lcd(0x27, 16, 2);
-const byte echo = 12;
-const byte trig = 13;
-const byte irEnb = 4;
-const byte ina = 8;
-const byte inb = 7;
-const byte inc = 6;
-const byte ind = 5;
-const byte ena = 9;
-const byte enb = 3;
-const byte sen1 = 10;
-const byte sen8 = 11;
+const byte echo = 8;
+const byte trig = 9;
+const byte irEnb = 13;
+const byte ina = 3;
+const byte inb = 4;
+const byte inc = 5;
+const byte ind = 6;
+const byte ena = 2;
+const byte enb = 7;
+const byte buzzPin = 10;
 
 const int leftbasespeed = 150; //Speed for line follow
 const int rightbasespeed = 150; //Speed for line follow
 const int maxspeed = 170; //Speed for line follow
 const int turnspeedright = 100; //Speed for line follow
 const int turnspeedleft = 100; //Speed for line follow
-int lastsensor, num_sensor = 8, threshold = 550, preverror;
+int lastsensor, num_sensor = 10, threshold = 600, preverror;
 int leftspeed = 0, rightspeed = 0;
-float kp = 6.20; //4
-float kd = 40; //33
+float kp = 6; //4
+float kd = 42; //33
 int sums = 0, count = 0;
-int sensorReading[8];
+int sensorReading[10];
 int right[] = {1, 3, 4, 5, 9};
 int left[] = {2, 6, 7, 8, 10, 11, 12};
 
@@ -71,6 +70,8 @@ int nfr = sizeof(forwardright) / sizeof(int);
 int nfl = sizeof(forwardleft) / sizeof(int);
 int startFlag = 0;
 char ch;
+String prevMsg = "", msg = "";
+
 byte customChar[] = {
   0x1F,
   0x1F,
@@ -87,10 +88,13 @@ int conditions();
 void lineFollow();
 void wallFollow();
 void readLine();
-void turnRight(int del1, int del2);
-void turnLeft(int del1, int del2);
-void goStraight(int del, int wheelspeed);
+void turnRight();
+void turnLeft();
+void goStraight();
 void stopBot(int del);
+bool readArray(int ara[], int sz, int cnt);
+int measureDistance();
+void show_message(String s);
 
 void setup()
 {
@@ -104,42 +108,52 @@ void setup()
   pinMode(trig, OUTPUT);
   pinMode(irEnb, OUTPUT);
 
-  pinMode(echo, INPUT);
-  pinMode(sen1, INPUT);
-  pinMode(sen8, INPUT);
+  pinMode(buzzPin, OUTPUT);
 
-  //  lcd.init();
-  //  lcd.backlight();
-  //  lcd.home();
+  pinMode(echo, INPUT);
+
+  lcd.init();
+  lcd.backlight();
+  lcd.home();
+  lcd.setCursor(5, 0);
+  lcd.print("Hello");
+  lcd.setCursor(0, 1);
+  lcd.print("I am robo waiter");
   digitalWrite(irEnb, LOW);
+  Serial1.begin(9600);
   Serial.begin(9600);
+  delay(1000);
+  Serial1.print("*");
 }
 void loop()
 {
-  if (Serial.available())
+  if (Serial1.available())
   {
-    ch = Serial.read();
+    ch = Serial1.read();
     if (ch >= '1' && ch <= '4')
     {
+      show_message("Going table " + (String)ch, 0, 0, true);
       digitalWrite(irEnb, HIGH);
       startFlag = 1;
+      delay(400);
     }
   }
   //  readLine();
-  //  conditions();
-  
+
   if (startFlag)
   {
-    int limit = 10;
     int distance = measureDistance();
     //Serial.println(distance);
-    if( distance > limit)
+    if ( distance > 10)
     {
+      digitalWrite(buzzPin, LOW);
       lineFollow(ch - '0');
     }
     else
     {
+      // Serial1.println(distance);
       stopBot(0);
+      digitalWrite(buzzPin, HIGH);
     }
   }
 }
