@@ -27,16 +27,16 @@ int right[] = {1, 3, 4, 5, 9};
 int left[] = {2, 6, 7, 8, 10, 11, 12};
 
 //table 1
-int rightOne[] = {2, 3, 4};
-int leftOne[] = {1};
+int rightOne[] = {3, 4};
+int leftOne[] = {1, 2};
 int straightone[] = {};
 int nrOne = sizeof(rightOne) / sizeof(int);
 int nlOne = sizeof(leftOne) / sizeof(int);
 int nsOne = sizeof(straightone) / sizeof(int);
 
 //table 2
-int rightTwo[] = {1, 4};
-int leftTwo[] = {2, 3};
+int rightTwo[] = {1, 2, 4};
+int leftTwo[] = {3};
 int straightTwo[] = {};
 int nrTwo = sizeof(rightTwo) / sizeof(int);
 int nlTwo = sizeof(leftTwo) / sizeof(int);
@@ -94,7 +94,7 @@ void goStraight();
 void stopBot(int del);
 bool readArray(int ara[], int sz, int cnt);
 int measureDistance();
-void show_message(String s);
+void show_message(String s, int row, int col, bool clr);
 
 void setup()
 {

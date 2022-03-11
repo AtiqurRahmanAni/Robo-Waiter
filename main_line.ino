@@ -12,6 +12,17 @@ void lineFollow(int tableNo)
     {
       show_message("Please Take", 0, 2, true);
       Serial1.print("#");
+      stopBot(0);
+      
+      digitalWrite(buzzPin, HIGH);
+      delay(400);
+      digitalWrite(buzzPin, LOW);
+      delay(400);
+      digitalWrite(buzzPin, HIGH);
+      delay(400);
+      digitalWrite(buzzPin, LOW);
+      delay(400);
+      
       while (analogRead(A10) > 360)
       {
         stopBot(0);
